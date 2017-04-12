@@ -89,8 +89,6 @@
     <div style="clear:both"></div>
 </div>
 </form>
-
-
 <div class="Xcontent">
 	<ul class="Xcontent01">
 
