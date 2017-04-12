@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.river.dao.OrderDao">
+	
+	<resultMap type="Order" id="OrderResult">
+		<result property="orderId" column="orderId"/>
+		<result property="ordertime" column="ordertime"/>
+		<result property="state" column="state"/>
+		<association property="user"   column="userId"  select="com.river.dao.UserDao.findByUserId" />
+		<association property="address"   column="addressId"  select="com.river.dao.AddressDao.findByAddressId" />
+		<collection property="orderitemList" column="orderId" select="com.river.dao.OrderitemDao.findByOrderId"></collection>
+		
+	</resultMap>
+
+
+	<cache eviction="FIFO" flushInterval="60000" size="500" readOnly="true"></cache>
+	
+	<insert id="addOrder" parameterType="Order" flushCache="true" keyProperty="orderId" >
+		insert into t_order values(#{orderId},#{ordertime},#{user.userId},#{address.addressId},#{state})
+	</insert>
+	
+	<select id="findOrderByUserIdWithState" parameterType="Map" resultMap="OrderResult">
+		select * from t_order where userId=#{userId} and state=#{state}
+	</select>
+	
+	<update id="updateOrder" parameterType="Map" flushCache="true">
+		update t_order set addressId=#{addressId} where orderId=#{orderId}
+	</update>
+	
+	<select id="findByOrderId" parameterType="String" resultMap="OrderResult">
+		select * from t_order where orderId=#{orderId}
+	</select>
+	
+	<update id="updateOrderState" parameterType="Map" flushCache="true">
+		update t_order set state=#{state} where orderId=#{orderId}
+	</update>
+	
+	<select id="findAllOrderByUserId" parameterType="String" resultMap="OrderResult">
+		select * from t_order where userId=#{userId} 
+	</select>
+	
+	<select id="adminFindAllOrder" resultMap="OrderResult">
+		select * from t_order
+	</select>
+	
+	
+	<select id="addminFindOrderByState" parameterType="String" resultMap="OrderResult">
+		select * from t_order where state=#{state}
+	</select>
+	
+	<update id="changeOrderState"  parameterType="Map" flushCache="true">
+		update t_order set state=#{state} where orderId=#{orderId}
+	</update>
+</mapper> 

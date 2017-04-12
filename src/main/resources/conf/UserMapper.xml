@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.river.dao.UserDao">
+	<cache eviction="FIFO" flushInterval="60000" size="500" readOnly="true"></cache>
+	
+	<select id="login" parameterType="User" resultType="User">
+		select * from t_user where phone=#{phone} and password=#{password}
+	</select>
+	
+	<select id="checkUserForRegist" parameterType="String" resultType="String">
+		select u.phone from t_user u where phone=#{phone} 
+	</select>
+	
+	<insert id="regist"  useGeneratedKeys="true" keyProperty="userId" flushCache="true" parameterType="User">
+		insert into t_user values(#{userId},#{username},#{password},#{phone},#{email} )
+	</insert>
+	
+	<select id="findEmailByPhone" parameterType="String" resultType="String">
+		select u.email from t_user u where phone=#{phone} 
+	</select>
+	
+	<update id="changePassword" flushCache="true" parameterType="User" >
+		update t_user set password=#{password} where phone=#{phone}
+	</update>
+	
+	<select id="findByUserId" parameterType="String" resultType="User">
+		select * from t_user where userId =#{userId}
+	</select>
+</mapper> 

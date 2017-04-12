@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.river.dao.CategoryDao">
+	<cache eviction="FIFO" flushInterval="60000" size="500" readOnly="true"></cache>
+	
+	<select id="getAllCategory" resultType="Category">
+		select * from t_category
+	</select>
+	
+	<insert id="adminAddCategory" parameterType="Category" keyProperty="categoryId" flushCache="true">
+		insert into t_category values(#{categoryId},#{categoryName})
+	</insert>
+	
+	<delete id="adminDelCategory" parameterType="String" flushCache="true">
+		delete from t_category where categoryId=#{categoryId}
+	</delete>
+	
+	<select id="adminFindBycategoryId"   parameterType="String" resultType="Category">
+		select * from t_category where categoryId=#{categoryId}
+	</select>
+	
+	<update id="adminUpdateCategory" parameterType="Category" flushCache="true">
+		update t_category set categoryName=#{categoryName} where categoryId=#{categoryId}
+	</update>
+	
+	<select id="findBycategoryId"   parameterType="String" resultType="Category">
+		select * from t_category where categoryId=#{categoryId}
+	</select>
+</mapper> 

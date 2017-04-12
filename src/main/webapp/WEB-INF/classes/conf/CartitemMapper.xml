@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.sw.dao.CartitemDao">
+	<cache eviction="FIFO" flushInterval="60000" size="500" readOnly="true"></cache>
+	
+	<resultMap type="Cartitem" id="CartitemResult">
+		<result property="cartitemId" column="cartitemId"/>
+		<result property="subtotal" column="subtotal"/>
+		<result property="amount" column="amoumt"/>
+		<association property="snacks" column="snacksId" select="com.sw.dao.SnacksDao.findById" />
+		<association property="user"   column="userId"  select="com.sw.dao.UserDao.findByUserId" />
+	</resultMap>
+	
+	<select id="findCaritemtBySnacksIdAndUserId"  parameterType="Map" resultType="Cartitem">
+		select * from t_cartitem where userId=#{userId} and snacksId=#{snacksId}
+	</select>
+	
+	<update id="updateCartitem" parameterType="Cartitem" flushCache="true" >
+		update t_cartitem set amount=#{amount},subtotal=#{subtotal} where userId=#{user.userId} and snacksId=#{snacks.snacksId}
+	</update>
+	
+	<insert id="addToCartitem" parameterType="Cartitem" flushCache="true" keyProperty="cartitemId">
+		insert into t_cartitem values(#{cartitemId},#{amount},#{subtotal},#{snacks.snacksId},#{user.userId});
+	</insert>
+	
+	
+	<select id="findCartitemListByUserId" parameterType="String" resultMap="CartitemResult" >
+		select * from t_cartitem where userId=#{userId}
+	</select>
+	
+	<delete id="deleteCartitem" parameterType="String" flushCache="true">
+		delete from t_cartitem where cartitemId=#{cartitemId}
+	</delete>
+	
+	<delete id="clearCart" flushCache="true" parameterType="String">
+		delete from t_cartitem where userId=#{userId}
+	</delete>
+</mapper> 
