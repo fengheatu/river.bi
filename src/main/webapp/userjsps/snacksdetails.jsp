@@ -183,7 +183,7 @@
 					</div>
 				</li>
 				<li id="shopCart">
-					<a href="<c:url value='userjsps/userdojsp/cart/list.jsp'/>" class="message_list" ><i class="message"></i><div class="span">购物车</div><span id="cart_num" class="cart_num">${count }</span></a>
+					<a href="<c:url value='${pageContext.request.contextPath}/userjsps/userdojsp/cart/list.jsp'/>" class="message_list" ><i class="message"></i><div class="span">购物车</div><span id="cart_num" class="cart_num">${count }</span></a>
 				</li>
 
 			</div>
