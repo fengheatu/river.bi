@@ -1,5 +1,20 @@
 package com.river.controller;
 
+import com.river.entity.Cartitem;
+import com.river.entity.User;
+import com.river.service.CartitemService;
+import com.river.service.UserService;
+import com.river.utils.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import javax.mail.Session;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,30 +22,11 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 
-import javax.annotation.Resource;
-import javax.mail.Session;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.mysql.jdbc.Buffer;
-import com.river.entity.Cartitem;
-import com.river.entity.User;
-import com.river.service.CartitemService;
-import com.river.service.UserService;
-import com.river.utils.CreateUUID;
-import com.river.utils.Mail;
-import com.river.utils.MailUtils;
-import com.river.utils.ResponseUtil;
-import com.river.utils.VerifyCode;
-
 @Controller
 @RequestMapping("/user")
 public class UserController {
+
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Resource
 	UserService userService;
@@ -59,6 +55,9 @@ public class UserController {
 		
 		
 		String phone = request.getParameter("phone");
+
+		logger.info("用户【"+ phone +"】登录");
+
 		String password = request.getParameter("password");
 		if (request.getParameterValues("checkbox") != null) {
 			setCookie(response, phone);
@@ -66,7 +65,7 @@ public class UserController {
 			removeCookie(response, phone);
 		}
 		User user = new User();
-		user.setPassword(password);
+		user.setPassword(MD5Util.MD5(password));
 		user.setPhone(phone);
 		User userReturn = userService.login(user);
 		if (userReturn != null) {
@@ -124,10 +123,11 @@ public class UserController {
 		User user = new User();
 		user.setUserId(CreateUUID.uuid());
 		user.setUsername(request.getParameter("username"));
-		user.setPassword(request.getParameter("password"));
+		user.setPassword(MD5Util.MD5(request.getParameter("password")));
 		user.setPhone(request.getParameter("phone"));
 		user.setEmail(request.getParameter("email"));
 		userService.regist(user);
+		logger.info("用户【"+ request.getParameter("phone") + "】注册成功");
 		return "../userjsps/loginregist.jsp";
 	}
 
@@ -159,6 +159,7 @@ public class UserController {
 	 */
 	@RequestMapping("/logout")
 	public String logout(HttpServletRequest request) {
+
 		request.getSession().removeAttribute("user");
 
 		return "../index.jsp";
@@ -175,7 +176,7 @@ public class UserController {
 			HttpServletResponse response) {
 		String phone = request.getParameter("phone");
 		String email = request.getParameter("email");
-
+		logger.info("用户【"+phone +"】校验绑定邮箱【" + email +"】");
 		String findEmail = userService.findEmailByPhone(phone);
 		if (!findEmail.equals(email)) {
 			ResponseUtil.write(response, "该手机号码" + phone + "未绑定该邮箱" + email
@@ -190,6 +191,7 @@ public class UserController {
 		String phone = request.getParameter("phone");
 		String email = request.getParameter("email");
 		sendEmail(email);
+		logger.info("用户【"+phone +"】发送邮件【" + email +"】");
 		request.getSession().setAttribute("phone", phone);
 		return "../index.jsp";
 	}
@@ -245,9 +247,12 @@ public class UserController {
 
 		String phone = request.getParameter("phone");
 		String password = request.getParameter("password");
+
+		logger.info("用户【"+ phone + "】修改密码");
+
 		User user = new User();
 		user.setPhone(phone);
-		user.setPassword(password);
+		user.setPassword(MD5Util.MD5(password));
 		userService.changePassword(user);
 
 		return "../userjsps/loginregist.jsp";

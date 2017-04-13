@@ -1,16 +1,5 @@
 package com.river.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.river.entity.Cartitem;
 import com.river.entity.Snacks;
 import com.river.entity.User;
@@ -18,9 +7,22 @@ import com.river.service.CartitemService;
 import com.river.service.SnacksService;
 import com.river.utils.CreateUUID;
 import com.river.utils.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class CartController {
+
+	private static final Logger logger = LoggerFactory.getLogger(CartController.class);
 
 	@Resource
 	CartitemService cartitemService;
@@ -32,13 +34,9 @@ public class CartController {
 	public void addToCart(HttpServletRequest request,HttpServletResponse response) {
 		
 		User user = (User) request.getSession().getAttribute("user");
+		logger.info("用户【" + user.getUserId() + "】使用购物车");
 		if(user == null) {
-			System.out.println(1);
-			try {
-				int i = 2/0;
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			} 
+			throw new RuntimeException("用户未登录");
 		}else {
 			int count = Integer.valueOf(request.getParameter("amount"));
 			//通过snacksId和userId 查询看看数据数据库是否有用户的车
@@ -101,6 +99,9 @@ public class CartController {
 	private void updateCartitem(HttpServletRequest request,int amount,int style) {
 		User user = (User) request.getSession().getAttribute("user");
 		String snacksId = request.getParameter("snacksId");
+
+		logger.info("用户【"+ user.getUserId() + "】将商品【" + snacksId +"】加入购物车");
+
 		Snacks snacks =snacksService.findById(snacksId);
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("userId", user.getUserId());
@@ -120,6 +121,7 @@ public class CartController {
 	public String deleteCartitem(HttpServletRequest request) {
 		User user = (User) request.getSession().getAttribute("user");
 		String cartitemId = request.getParameter("cartitemId");
+		logger.info("用户【"+ user.getUserId() + "】从购物车中移除商品【" + cartitemId +"】");
 		cartitemService.deleteCartitem(cartitemId);
 		List<Cartitem> cartitemList = cartitemService.findCartitemListByUserId(user.getUserId());
 		request.getSession().setAttribute("cartitemList", cartitemList);

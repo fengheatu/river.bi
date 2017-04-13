@@ -1,25 +1,27 @@
 package com.river.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.river.entity.Category;
 import com.river.entity.Snacks;
 import com.river.service.CategoryService;
 import com.river.service.SnacksService;
 import com.river.utils.PageBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SnacksController {
+
+	private static final Logger logger = LoggerFactory.getLogger(SnacksController.class);
 
 	@Resource
 	SnacksService snacksService;
@@ -29,6 +31,9 @@ public class SnacksController {
 
 	@RequestMapping("/showSnacks")
 	public String showSnacks(HttpServletRequest request, @RequestParam int page) {
+
+		logger.info("显示第【"+page+"】页商品");
+
 		if (page <= 0) {
 			page = 1;
 		}
@@ -52,6 +57,9 @@ public class SnacksController {
 	@RequestMapping("/findByCategoryId")
 	public String findByCategoryId(HttpServletRequest request,
 			@RequestParam int page, String categoryId) {
+
+		logger.info("查询【" + categoryId +"】类商品");
+
 		if (page <= 0) {
 			page = 1;
 		}
@@ -80,6 +88,9 @@ public class SnacksController {
 			page = 1;
 		}
 		int pageSize = 44;
+
+		logger.info("按条件查询 startPrice【" + startPrice+"】endPrice【"+endPrice+"】keyword【"+keyword+"】");
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("startPrice", startPrice);
 		map.put("endPrice", endPrice);

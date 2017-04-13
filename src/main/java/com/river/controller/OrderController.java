@@ -1,37 +1,25 @@
 package com.river.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import com.river.entity.*;
+import com.river.service.*;
+import com.river.utils.CreateUUID;
+import com.river.utils.PaymentUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.river.entity.Address;
-import com.river.entity.Cartitem;
-import com.river.entity.Order;
-import com.river.entity.Orderitem;
-import com.river.entity.Snacks;
-import com.river.entity.User;
-import com.river.service.AddressService;
-import com.river.service.CartitemService;
-import com.river.service.OrderService;
-import com.river.service.OrderitemService;
-import com.river.service.SnacksService;
-import com.river.utils.CreateUUID;
-import com.river.utils.PaymentUtil;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 @Controller
 public class OrderController {
+
+	private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
 	@Resource
 	OrderService orderService;
@@ -53,6 +41,9 @@ public class OrderController {
 			HttpServletResponse response) {
 
 		User user = (User) request.getSession().getAttribute("user");
+
+		logger.info("用户【" + user.getUserId() + "】添加订单");
+
 		List<Cartitem> cartitemList = cartitemService
 				.findCartitemListByUserId(user.getUserId());
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -100,9 +91,13 @@ public class OrderController {
 
 	@RequestMapping("/commitorder")
 	public String commitorder(HttpServletRequest request) {
+
 		String orderId = request.getParameter("orderId");
 		String addressId = request.getParameter("addressId");
 		String totalprice = request.getParameter("totalprice");
+
+		logger.info("用户提交订单【" + orderId + "】");
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("orderId", orderId);
 		map.put("addressId", addressId);
@@ -117,6 +112,8 @@ public class OrderController {
 	@RequestMapping("/payToBank")
 	public String payToBank(HttpServletRequest request,
 			HttpServletResponse response) {
+
+		logger.info("付款");
 
 		InputStream input = this.getClass().getClassLoader()
 				.getResourceAsStream("merchantInfo.properties");
@@ -176,6 +173,8 @@ public class OrderController {
 	@RequestMapping("/findOrderByUserIdWithState")
 	public String findOrderByUserIdWithState(HttpServletRequest request) {
 		User user = (User) request.getSession().getAttribute("user");
+
+		logger.info("根据状态【"+ request.getParameter("state") +"】查询用户【" + user.getUserId() + "】订单");
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userId", user.getUserId());
 		map.put("state", Integer.valueOf(request.getParameter("state")));
@@ -187,6 +186,9 @@ public class OrderController {
 	@RequestMapping("/findOrderByUserId")
 	public String findOrderByUserId(HttpServletRequest request) {
 		User user = (User) request.getSession().getAttribute("user");
+
+		logger.info("查询用户【" + user.getUserId() +"】所有订单");
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userId", user.getUserId());
 		map.put("state", 1);
@@ -200,6 +202,9 @@ public class OrderController {
 	public String payOneOrder(HttpServletRequest request) {
 		User user = (User) request.getSession().getAttribute("user");
 		Order order = orderService.findByOrderId(request.getParameter("orderId"));
+
+		logger.info("用户【" + user.getUserId() + "】付款订单【"+ request.getParameter("orderId") + "】 ");
+
 		List<Order> orderList = new ArrayList<Order>();
 		orderList.add(order);
 		request.getSession().setAttribute("orderList", orderList);
@@ -212,6 +217,9 @@ public class OrderController {
 	@RequestMapping("/updateOrderState")
 	public String updateOrderState(HttpServletRequest request) {
 		User user = (User) request.getSession().getAttribute("user");
+
+		logger.info("用户【" + user.getUserId()+ "】修改订单【" + request.getParameter("orderId") +"】状态【" +request.getParameter("state") +" 】");
+
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("orderId",request.getParameter("orderId"));
 		map.put("state",Integer.valueOf(request.getParameter("state")));
@@ -234,7 +242,7 @@ public class OrderController {
 			return null;
 		}else {
 		Snacks snacks =snacksService.findById(request.getParameter("snacksId"));
-		
+		logger.info("添加商品【" + snacks.getSnacksId() + "】订单");
 		Order order = new Order();
 		order.setOrderId(CreateUUID.uuid());
 		order.setOrdertime(new Date());
