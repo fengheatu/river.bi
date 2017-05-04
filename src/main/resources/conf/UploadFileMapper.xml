@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.river.dao.UploadFileDao">
+	<cache eviction="FIFO" flushInterval="60000" size="500" readOnly="true"></cache>
+	<resultMap id="BaseResultMap" type="UploadFile">
+		<id column="id" jdbcType="CHAR" property="id" />
+		<result column="user_id" jdbcType="CHAR" property="userId" />
+		<result column="snacks_id" jdbcType="CHAR" property="snacksId" />
+		<result column="url" jdbcType="VARCHAR" property="url" />
+		<result column="file_name" jdbcType="VARCHAR" property="fileName" />
+		<result column="reate_time" jdbcType="DATE" property="reateTime" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, user_id, snacks_id, url, file_name, reate_time
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from upload_file
+		where id = #{id,jdbcType=CHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from upload_file
+		where id = #{id,jdbcType=CHAR}
+	</delete>
+	<insert id="insert" parameterType="UploadFile">
+		insert into upload_file (id, user_id, snacks_id,
+		url, file_name, reate_time
+		)
+		values (#{id,jdbcType=CHAR}, #{userId,jdbcType=CHAR}, #{snacksId,jdbcType=CHAR},
+		#{url,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{reateTime,jdbcType=DATE}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="UploadFile">
+		insert into upload_file
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="snacksId != null">
+				snacks_id,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+			<if test="fileName != null">
+				file_name,
+			</if>
+			<if test="reateTime != null">
+				reate_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=CHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=CHAR},
+			</if>
+			<if test="snacksId != null">
+				#{snacksId,jdbcType=CHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="fileName != null">
+				#{fileName,jdbcType=VARCHAR},
+			</if>
+			<if test="reateTime != null">
+				#{reateTime,jdbcType=DATE},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="UploadFile">
+		update upload_file
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=CHAR},
+			</if>
+			<if test="snacksId != null">
+				snacks_id = #{snacksId,jdbcType=CHAR},
+			</if>
+			<if test="url != null">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="fileName != null">
+				file_name = #{fileName,jdbcType=VARCHAR},
+			</if>
+			<if test="reateTime != null">
+				reate_time = #{reateTime,jdbcType=DATE},
+			</if>
+		</set>
+		where id = #{id,jdbcType=CHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="UploadFile">
+		update upload_file
+		set user_id = #{userId,jdbcType=CHAR},
+		snacks_id = #{snacksId,jdbcType=CHAR},
+		url = #{url,jdbcType=VARCHAR},
+		file_name = #{fileName,jdbcType=VARCHAR},
+		reate_time = #{reateTime,jdbcType=DATE}
+		where id = #{id,jdbcType=CHAR}
+	</update>
+
+
+	<select id="listUploadFIleBySnacksId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from upload_file
+		where snacks_id = #{snacks_id,jdbcType=CHAR}
+	</select>
+</mapper> 
