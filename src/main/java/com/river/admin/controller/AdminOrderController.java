@@ -65,4 +65,12 @@ public class AdminOrderController {
 
 		return "../adminjsps/admin/order/list.jsp";
 	}
+
+	@RequestMapping(value = "/getShipmentsInfo",method = RequestMethod.GET)
+	public String getShipmentsInfo(String orderId,HttpServletRequest request) {
+
+		Order order = orderService.getShipmentsInfoByOrderId(orderId);
+		request.setAttribute("order",order);
+		return "../adminjsps/admin/order/shipmentsInfo.jsp";
+	}
 }

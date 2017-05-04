@@ -19,6 +19,6 @@
   
   <body style="background: rgb(78,78,78);color: white;">
 <h1 style="text-align: center; ">小吃货零食商城后台管理</h1>
-<p style="font-size: 11pt;">管理员：${admin.adminUsername }</p>
+<p style="font-size: 11pt;">管理员：${admin.adminUsername } &nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/admin/adminLogout.html" style="background-color: #8BC145;text-decoration: none" target="_top">安全退出</a></p>
   </body>
 </html>

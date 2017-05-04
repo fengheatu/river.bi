@@ -20,15 +20,23 @@
                 	return true;
                 }
              }
-    </script> 
+    </script>
+	  <style type="text/css">
+		  body {
+			  background: url('/images/welcome.jpg')top center no-repeat;
+			  background-size:cover;
+		  }
+	  </style>
 	
   </head>
-  
-  <body>
-   	<h1>更新地址信息</h1>
-   	<form action="<c:url value='/updateAddress.html'/>" method="post">
-   		<table>
-   		<tr>
+
+  <body style="background-color: #4d4d4d">
+  <div style="margin-top: 200px">
+   	<h1 style="text-align: center">更新地址信息</h1>
+	  <div style="position:relative;width:760px;left:50%;margin-left:-125px">
+    	<form action="<c:url value='/updateAddress.html'/>" method="post">
+   		 <table>
+   		 <tr>
    				<td></td>
    				<td><input type="hidden" name="addressId" value="${address.addressId }"/></td>
    			</tr>
@@ -56,5 +64,7 @@
    			</tr>
    		</table>
    	</form>
+	  </div>
+  </div>
   </body>
 </html>

@@ -79,6 +79,10 @@ public class AdminSnacksController {
 		String   rex = fileName.substring(fileName.lastIndexOf("."));
 		String newFileName = System.currentTimeMillis() + rex;
 		String fileUrl = uploadUrl + newFileName;
+		File file = new File(uploadUrl);
+		if(!file.exists()) {
+			file.mkdirs();
+		}
 		try {
 			image.transferTo(new File(fileUrl));
 		} catch (IOException e) {

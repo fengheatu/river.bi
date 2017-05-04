@@ -109,4 +109,16 @@ public class OrderServiceImpl implements OrderService{
 	public void realDeleteOneOrder(String orderId) {
 		orderDao.realDeleteOneOrder(orderId);
 	}
+
+
+	/**
+	 * 获取订单收货信息
+	 *
+	 * @param orderId
+	 * @return
+	 */
+	@Override
+	public Order getShipmentsInfoByOrderId(String orderId) {
+		return orderDao.queryShipmentsInfoByOrderId(orderId);
+	}
 }

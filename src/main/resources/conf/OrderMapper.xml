@@ -77,4 +77,8 @@
 		DELETE FROM  t_order WHERE orderId = #{orderId}
 	</delete>
 
+	<select id="queryShipmentsInfoByOrderId" parameterType="string" resultMap="OrderResult">
+		SELECT  * FROM t_order WHERE orderId = #{orderId}
+	</select>
+
 </mapper> 

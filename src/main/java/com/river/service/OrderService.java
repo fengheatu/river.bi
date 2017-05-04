@@ -91,4 +91,12 @@ public interface OrderService {
 	 * @param orderId
 	 */
 	void realDeleteOneOrder(String orderId);
+
+
+	/**
+	 * 获取订单收货信息
+	 * @param orderId
+	 * @return
+	 */
+	Order getShipmentsInfoByOrderId(String orderId);
 }

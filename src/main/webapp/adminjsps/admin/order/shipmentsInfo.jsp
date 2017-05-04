@@ -6,7 +6,7 @@
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
-    <title>添加地址</title>
+    <title>用户收货信息</title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript">
     	function checkPhone(){
@@ -32,35 +32,36 @@
   </head>
   
   <body>
-  <div style="margin-top: 200px">
-   	<h1 style="text-align: center">添加新地址信息</h1>
+  <div style="margin-top: 100px">
+   	<h1 style="text-align: center">用户收货信息</h1>
     <div style="position:relative;width:760px;left:50%;margin-left:-125px">
-   	<form action="<c:url value='/addAddress.html'/>" method="post">
    		<table>
+			<tr>
+				<td>订单号：</td>
+				<td>${order.orderId}</td>
+			</tr>
    			<tr>
    				<td>收货人：</td>
-   				<td><input type="text" name="consignee" /></td>
+   				<td>${order.address.consignee}</td>
    			</tr>
    			<tr>
    				<td>手机号码：</td>
-   				<td><input type="text" name="phone"	id="phone" onblur="return checkPhone()"/>
-   					<span style="color:red;" id="phoneMsg"></span>
-   				</td>
+   				<td>${order.address.phone}</td>
    			</tr>
    			<tr>
    				<td>详细地址</td>
-   				<td><input type="text" name="address"	id="address"/></td>
+   				<td>${order.address.address}</td>
    			</tr>
    			<tr>
    				<td>邮政编码</td>
-   				<td><input type="text" name="zipcode" id="zipcode"/></td>
+   				<td>${order.address.zipcode}</td>
    			</tr>
-   			<tr>
-   				<td><input type="submit" value="添加"/></td>
-   				<td><input type="reset"	value="重置地址信息"/></td>
-   			</tr>
+
+			<tr>
+				<td><button onclick="location.href='javascript:history.go(-1);'">返回</button></td>
+			</tr>
    		</table>
-   	</form>
+
   </div>
   </div>
   </body>

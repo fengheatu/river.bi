@@ -17,14 +17,16 @@
 
   </head>
   
-  <body>
-<h1>管理员登录页面</h1>
+  <body style="background-color: #93a1a1">
+<h1 align="center" style="color: #1B6AAA">管理员登录页面</h1>
 <hr/>
+<div align="center">
   <p style="font-weight: 900; color: red">${adminMsg }</p>
 <form action="<c:url value='/admin/adminLogin.html'/>" method="post">
 	管理员账户：<input type="text" name="adminUsername" value=""/><br/>
 	密　　　码：<input type="password" name="adminPassword"/><br/>
 	<input type="submit" value="进入后台"/>
 </form>
+</div>
   </body>
 </html>

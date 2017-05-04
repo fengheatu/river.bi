@@ -101,4 +101,12 @@ public interface OrderDao {
 	 * @param orderId
 	 */
 	void realDeleteOneOrder(String orderId);
+
+	/**
+	 * 获取订单收货信息
+	 *
+	 * @param orderId
+	 * @return
+	 */
+    Order queryShipmentsInfoByOrderId(String orderId);
 }

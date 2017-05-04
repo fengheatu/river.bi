@@ -62,6 +62,8 @@
 			<c:if test="${order.state eq 4 }">
 				订单完成
 			</c:if>
+
+			&nbsp;&nbsp;<a href="<c:url value=''/>/admin/getShipmentsInfo.html?orderId=${order.orderId } ">发货信息</a>
 		</td>
 	</tr>
 	<c:forEach items="${order.orderitemList }" var="orderitem">

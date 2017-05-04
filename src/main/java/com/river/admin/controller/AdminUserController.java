@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin")
@@ -47,6 +48,14 @@ public class AdminUserController {
 		request.getSession().setAttribute("admin", admin);
 	
 		return "../adminjsps/admin/index.jsp";
+	}
+
+	@RequestMapping(value = "/adminLogout",method = RequestMethod.GET)
+	public String adminLogout(HttpSession session) {
+		AdminUser adminUser = (AdminUser) session.getAttribute("admin");
+		logger.info("管理员【" + adminUser.getAdminUsername() + "】退出");
+		session.removeAttribute("admin");
+		return "redirect:../adminjsps/login.jsp";
 	}
 
 	/**
