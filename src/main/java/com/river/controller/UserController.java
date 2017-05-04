@@ -56,8 +56,6 @@ public class UserController {
 		
 		String phone = request.getParameter("phone");
 
-		logger.info("用户【"+ phone +"】登录");
-
 		String password = request.getParameter("password");
 		if (request.getParameterValues("checkbox") != null) {
 			setCookie(response, phone);
@@ -70,6 +68,9 @@ public class UserController {
 		User userReturn = userService.login(user);
 		if (userReturn != null) {
 			request.getSession().setAttribute("user", userReturn);
+
+			logger.info("用户【"+ phone +"】登录");
+
 			List<Cartitem> cartitemList = cartitemService.findCartitemListByUserId(userReturn.getUserId());
 			request.getSession().setAttribute("cartitemList", cartitemList);
 			int count = 0;
@@ -81,6 +82,7 @@ public class UserController {
 			return "../index.jsp";
 		} else {
 			request.setAttribute("loginMsg", "用户名或密码错误");
+			logger.info("用户【"+ phone +"】登录失败");
 			return "../userjsps/loginregist.jsp";
 		}
 	}

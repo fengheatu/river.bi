@@ -78,7 +78,7 @@
                                 <div class="item-row">
                                     <div class="col col-1">
                                         <div class="g-pic">
-                                            <img src="<c:url value='/image/${orderitem.snacks.image }'/>"  width="40" height="40" />
+                                            <img src="<c:url value='/snacksImages/${orderitem.snacks.image }'/>"  width="40" height="40" />
                                         </div>
                                         <div class="g-info">
                                     <a href="http://item.mi.com/1151500067.html" target="_blank">${orderitem.snacks.snackName }</a>

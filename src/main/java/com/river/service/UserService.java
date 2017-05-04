@@ -1,6 +1,9 @@
 package com.river.service;
 
 import com.river.entity.User;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 public interface UserService {
 
@@ -29,7 +32,34 @@ public interface UserService {
 	 * @param user
 	 */
 	public abstract void changePassword(User user);
-	 
-	 
-	 
+
+	/**
+	 * 查询所有用户
+	 * @return
+     */
+	List<User> findAllUser();
+
+	/**
+	 * 通过手机号码查询用户信息
+	 * @param phone
+	 * @return
+     */
+	List<User> findByPhone(String phone);
+
+
+	/**
+	 * 通过用户Id查询用户信息
+	 * @param userId
+	 * @return
+     */
+	User  findUserByUserId(String userId);
+
+
+	/**
+	 * 更新用户信息
+	 * @param user
+	 * @return
+     */
+
+	int updateUserInfo(User user);
 }

@@ -49,7 +49,7 @@
 				<c:forEach items="${cartitemList }" var="cartitem">
 					<tr>
 					<td colspan="1" class="goods"><label>
-					<input type="checkbox" checked="checked" style="display:none;" class="check-one check" /><img width="100px" height="80px" src="<c:url value='/image/${cartitem.snacks.image }'/>"/></label></td>
+					<input type="checkbox" checked="checked" style="display:none;" class="check-one check" /><img width="100px" height="80px" src="<c:url value='/snacksImages/${cartitem.snacks.image }'/>"/></label></td>
 					<td>${cartitem.snacks.snackName }</td>
 					<td class="selling-price number small-bold-red text-right"
 								style="padding-top: 1.1rem;" data-bind="${cartitem.snacks.price }"></td>

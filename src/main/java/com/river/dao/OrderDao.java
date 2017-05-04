@@ -3,6 +3,7 @@ package com.river.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.river.entity.Order;
@@ -80,9 +81,24 @@ public interface OrderDao {
 	public abstract void changeOrderState(Map<String, Object> map);
 
 
-	
+	/**
+	 * 按条件查询订单
+	 * @param phone
+	 * @param orderId
+	 * @return
+	 */
+	List<Order> findByPhoneWithOrderId(@Param("phone") String phone, @Param("orderId") String orderId);
 
-	
-	
-	
+	/**
+	 * 删除订单
+	 * @param orderId
+     */
+	void deleteOneOrderByOefer(String orderId);
+
+	/**
+	 * 删除订单
+	 *
+	 * @param orderId
+	 */
+	void realDeleteOneOrder(String orderId);
 }

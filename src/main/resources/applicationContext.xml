@@ -36,12 +36,12 @@
 		
 		<!-- 显式指定Mapper文件位置 -->
 		<property name="mapperLocations" value="classpath*:/conf/*Mapper.xml"></property>
-		<property name="configLocation" value="classpath:/conf/config.xml"></property>		
+		<!--<property name="configLocation" value="classpath:/conf/config.xml"></property>-->
 	</bean>
 	
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
-		<constructor-arg index="1" value="BATCH"></constructor-arg>
+		<!--<constructor-arg index="1" value="BATCH"></constructor-arg>-->
 	</bean>
 	
 	<!-- 扫描basePackage接口 -->

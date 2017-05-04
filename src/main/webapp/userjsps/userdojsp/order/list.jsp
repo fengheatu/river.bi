@@ -101,6 +101,7 @@
 			订单编号：${order.orderId }　成交时间：<fmt:formatDate value="${order.ordertime }" pattern="yyyy-MM-dd HH:mm:ss"/>　金额：<font color="red"><b>${totalprice }</b></font>　
 			<c:if test="${order.state eq 1 }">
 				<a href="<c:url value='/payOneOrder.html?orderId=${order.orderId }'/>">付款</a>
+				<a href="<c:url value='/realDeleteOneOrder.html?orderId=${order.orderId }'/>" onclick="return confirm()">删除</a>
 			</c:if>
 			<c:if test="${order.state eq 2 }">
 				等待发货
@@ -110,6 +111,7 @@
 			</c:if>
 			<c:if test="${order.state eq 4 }">
 				订单完成
+				<a href="<c:url value='/deleteOneOrder.html?orderId=${order.orderId }'/>" onclick="return confirm()">删除</a>
 			</c:if>
 		</td>
 	</tr>

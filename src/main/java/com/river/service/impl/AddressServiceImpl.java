@@ -4,6 +4,7 @@ import com.river.dao.AddressDao;
 import com.river.entity.Address;
 import com.river.service.AddressService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -15,6 +16,7 @@ public class AddressServiceImpl implements AddressService {
 	AddressDao addressDao;
 
 	@Override
+	@Transactional
 	public void addAddress(Address address) {
 		
 		addressDao.addAddress(address);
@@ -33,12 +35,14 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
+	@Transactional
 	public void updateAddress(Address address) {
 		
 		addressDao.updateAddress(address);
 	}
 
 	@Override
+	@Transactional
 	public void deleteAddressByAddressId(String addressId) {
 		
 		addressDao.deleteAddressByAddressId(addressId);

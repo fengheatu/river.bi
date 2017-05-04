@@ -4,6 +4,7 @@ import com.river.dao.CategoryDao;
 import com.river.entity.Category;
 import com.river.service.CategoryService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -20,12 +21,14 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
+	@Transactional
 	public void adminAddCategory(Category category) {
 		
 		categoryDao.adminAddCategory(category);
 	}
 
 	@Override
+	@Transactional
 	public void adminDelCategory(String categoryId) {
 		categoryDao.adminDelCategory(categoryId);
 		
@@ -38,6 +41,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
+	@Transactional
 	public void adminUpdateCategory(Category category) {
 		
 		categoryDao.adminUpdateCategory(category);

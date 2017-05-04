@@ -4,6 +4,7 @@ import com.river.dao.SnacksDao;
 import com.river.entity.Snacks;
 import com.river.service.SnacksService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -59,6 +60,7 @@ public class SnacksServiceImpl implements SnacksService {
 
 
 	@Override
+	@Transactional
 	public void adminUpdateSnacksById(Snacks snacks) {
 		
 		snacksDao.adminUpdateSnacksById(snacks);
@@ -66,6 +68,7 @@ public class SnacksServiceImpl implements SnacksService {
 	}
 
 	@Override
+	@Transactional
 	public void adminAddSnacks(Snacks snacks) {
 	
 		snacksDao.adminAddSnacks( snacks);

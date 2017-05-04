@@ -124,11 +124,13 @@
       <version>${mysql-driver.version}</version>
     </dependency>
     <!-- 添加数据库连接池依赖 -->
+    <!-- https://mvnrepository.com/artifact/com.mchange/c3p0 -->
     <dependency>
-      <groupId>com.mchange.c3p0</groupId>
-      <artifactId>com.springsource.com.mchange.v2.c3p0</artifactId>
-      <version>0.9.1.2</version>
+      <groupId>com.mchange</groupId>
+      <artifactId>c3p0</artifactId>
+      <version>0.9.5.2</version>
     </dependency>
+
 
     <!-- 添加fastjson -->
     <dependency>

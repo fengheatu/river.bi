@@ -61,7 +61,7 @@
   			<c:forEach items="${pageBean.pageBeanList }" var="pageBean">
             <li>
                 <div class="lh_wrap" style="margin: 20px">
-                    <div class="p-img"><a href="<c:url value='/snacksdetails.html?snacksId=${pageBean.snacksId }'/>"><img alt="${pageBean.snackName }" src="${pageContext.request.contextPath}/image/${pageBean.image}" title="${pageBean.snackName }" width="240" height="240"></a></div>
+                    <div class="p-img"><a href="<c:url value='/snacksdetails.html?snacksId=${pageBean.snacksId }'/>"><img alt="${pageBean.snackName }" src="${pageContext.request.contextPath}/snacksImages/${pageBean.image}" title="${pageBean.snackName }" width="240" height="240"></a></div>
                     <div><a href="<c:url value='/snacksdetails.html?snacksId=${pageBean.snacksId }'/>" style="color: red">${pageBean.description }</a></div>
                     <div class="p-name"><a href="#" title="${pageBean.snackName }">${pageBean.snackName }</a></div>
                     <div class="p-price"><strong>￥${pageBean.price }</strong><span id="p200"></span></div>

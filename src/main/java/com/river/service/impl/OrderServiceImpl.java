@@ -4,6 +4,7 @@ import com.river.dao.OrderDao;
 import com.river.entity.Order;
 import com.river.service.OrderService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -22,12 +23,14 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
+	@Transactional
 	public void addOrder(Order order) {
 		
 		orderDao.addOrder(order);
 	}
 
 	@Override
+	@Transactional
 	public void updateOrder(Map<String, Object> map) {
 		orderDao.updateOrder(map);
 		
@@ -40,6 +43,7 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 	@Override
+	@Transactional
 	public void updateOrderState(Map<String, Object> map) {
 	
 		orderDao.updateOrderState(map);
@@ -66,6 +70,7 @@ public class OrderServiceImpl implements OrderService{
 
 
 	@Override
+	@Transactional
 	public void changeOrderState(Map<String, Object> map) {
 	
 		orderDao.changeOrderState(map);
@@ -73,8 +78,35 @@ public class OrderServiceImpl implements OrderService{
 	}
 
 
-	
-		
-	
+	/**
+	 * 按条件查询订单
+	 *
+	 * @param phone
+	 * @param orderId
+	 * @return
+	 */
+	@Override
+	public List<Order> findByPhoneWithOrderId(String phone, String orderId) {
+		return orderDao.findByPhoneWithOrderId( phone,orderId);
+	}
 
+	/**
+	 * 删除订单
+	 *
+	 * @param orderId
+	 */
+	@Override
+	public void deleteOneOrderByOefer(String orderId) {
+		orderDao.deleteOneOrderByOefer(orderId);
+	}
+
+	/**
+	 * 删除订单
+	 *
+	 * @param orderId
+	 */
+	@Override
+	public void realDeleteOneOrder(String orderId) {
+		orderDao.realDeleteOneOrder(orderId);
+	}
 }

@@ -5,7 +5,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>My JSP 'bookdesc.jsp' starting page</title>
+    <title>编辑商品信息</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -36,7 +36,7 @@
   
   <body>
   <div>
-    <img src="<c:url value='/image/${snacks.image}'/>" border="0" width="103px" height="147px"/>
+    <img src="<c:url value='/snacksImages/${snacks.image}'/>" border="0" width="103px" height="147px"/>
   </div>
   <form   action="<c:url value='/admin/adminUpdateSnacksById.html'/>" method="post" enctype="multipart/form-data">
            商品图片：<input style="width: 223px; height: 20px;" type="file" name="image"/><br/>

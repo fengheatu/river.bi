@@ -4,6 +4,7 @@ import com.river.entity.Category;
 import com.river.entity.Snacks;
 import com.river.service.CategoryService;
 import com.river.service.SnacksService;
+import com.river.service.UploadFileService;
 import com.river.utils.PageBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,16 @@ public class SnacksController {
 	@Resource
 	CategoryService categoryService;
 
+	@Resource
+	UploadFileService uploadFileService;
+
+
+	/**
+	 * 首页显示商品
+	 * @param request
+	 * @param page
+	 * @return
+     */
 	@RequestMapping("/showSnacks")
 	public String showSnacks(HttpServletRequest request, @RequestParam int page) {
 
@@ -54,6 +65,14 @@ public class SnacksController {
 		return "/userjsps/main.jsp";
 	}
 
+
+	/**
+	 * 通过类别查询商品
+	 * @param request
+	 * @param page
+	 * @param categoryId
+     * @return
+     */
 	@RequestMapping("/findByCategoryId")
 	public String findByCategoryId(HttpServletRequest request,
 			@RequestParam int page, String categoryId) {
@@ -80,6 +99,16 @@ public class SnacksController {
 		return "/userjsps/main.jsp";
 	}
 
+
+	/**
+	 * 关键词查询
+	 * @param request
+	 * @param startPrice
+	 * @param endPrice
+	 * @param keyword
+	 * @param page
+     * @return
+     */
 	@RequestMapping("/keywordSearch")
 	public String keywordSearch(HttpServletRequest request,
 			@RequestParam Double startPrice, Double endPrice, String keyword,
@@ -143,11 +172,17 @@ public class SnacksController {
 			return url;
 		}
 	}
-	
+
+	/**
+	 * 商品详情
+	 * @param request
+	 * @return
+     */
 	@RequestMapping("/snacksdetails")
-	public String snacksdetails(HttpServletRequest request) {
+	public String snacksdetails(String snacksId,HttpServletRequest request) {
 		request.setAttribute("snacks",
-				snacksService.findById(request.getParameter("snacksId")));
+				snacksService.findById(snacksId));
+		request.setAttribute("snacksImages",uploadFileService.listUploadFIleBySnacksId(snacksId));
 		return "userjsps/snacksdetails.jsp";
 	}
 }

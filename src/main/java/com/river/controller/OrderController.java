@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -267,4 +268,44 @@ public class OrderController {
 		return "userjsps/userdojsp/order/order.jsp";
 		}
 	}
+
+	/**
+	 * 删除用户订单
+	 * @param orderId
+	 * @param request
+     * @return
+     */
+	@RequestMapping(value = "deleteOneOrder",method= RequestMethod.GET)
+	public String deleteOneOrder(String orderId,HttpServletRequest request) {
+		User user = (User) request.getSession().getAttribute("user");
+
+		orderService.deleteOneOrderByOefer(orderId);
+
+		logger.info("用户【" + user.getUserId() + "】删除订单【" + orderId +"】");
+
+		request.getSession().setAttribute("orderList", orderService.findOrderByUserId(user.getUserId()));
+		return "userjsps/userdojsp/order/list.jsp";
+	}
+
+	/**
+	 * 删除用户订单
+	 * @param orderId
+	 * @param request
+     * @return
+     */
+	@RequestMapping(value = "realDeleteOneOrder",method= RequestMethod.GET)
+	public String realDeleteOneOrder(String orderId,HttpServletRequest request) {
+		User user = (User) request.getSession().getAttribute("user");
+
+		orderService.realDeleteOneOrder(orderId);
+
+		logger.info("用户【" + user.getUserId() + "】删除订单【" + orderId +"】");
+
+		request.getSession().setAttribute("orderList", orderService.findOrderByUserId(user.getUserId()));
+		return "userjsps/userdojsp/order/list.jsp";
+	}
+
+
+
+
 }

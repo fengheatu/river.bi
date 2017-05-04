@@ -14,18 +14,29 @@ public class Order implements Serializable {
 	private Address address;
 	private List<com.river.entity.Orderitem> orderitemList = new ArrayList<com.river.entity.Orderitem>();
 	private int state; //订单状态 1 未付款 2已付款3已发货4已完成
+	private Integer isDelete;
 	public Order() {
 	
 	}
-	public Order(String orderId, Date ordertime, User user, Address address,
-			int state) {
-		
+
+	public Order(String orderId, Date ordertime, User user, Address address, List<Orderitem> orderitemList, int state, Integer isDelete) {
 		this.orderId = orderId;
 		this.ordertime = ordertime;
 		this.user = user;
 		this.address = address;
+		this.orderitemList = orderitemList;
 		this.state = state;
+		this.isDelete = isDelete;
 	}
+
+	public Integer getIsDelete() {
+		return isDelete;
+	}
+
+	public void setIsDelete(Integer isDelete) {
+		this.isDelete = isDelete;
+	}
+
 	public String getOrderId() {
 		return orderId;
 	}

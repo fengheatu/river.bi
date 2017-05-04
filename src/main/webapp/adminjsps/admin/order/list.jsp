@@ -33,7 +33,12 @@
   </head>
   
   <body style="background: rgb(254,238,189);">
-<h1>我的订单</h1>
+<form action="<c:url value='/admin/findByPhoneWithOrderId.html'/>" method="post"/>
+	<strong>我的订单</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="text" name="orderId" placeholder="支持订单号查询"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="text" name="phone" placeholder="支持手机号查询"/>
+	<input type="submit" value="查询"/>
+</form>
 
 <table border="1" width="100%" cellspacing="0" background="black">
 	

@@ -17,11 +17,11 @@
 	<cache eviction="FIFO" flushInterval="60000" size="500" readOnly="true"></cache>
 	
 	<insert id="addOrder" parameterType="Order" flushCache="true" keyProperty="orderId" >
-		insert into t_order values(#{orderId},#{ordertime},#{user.userId},#{address.addressId},#{state})
+		insert into t_order(orderId,ordertime,userId,addressId,state) values(#{orderId},#{ordertime},#{user.userId},#{address.addressId},#{state})
 	</insert>
 	
 	<select id="findOrderByUserIdWithState" parameterType="Map" resultMap="OrderResult">
-		select * from t_order where userId=#{userId} and state=#{state}
+		select * from t_order where userId=#{userId} and state=#{state} AND is_delete=0
 	</select>
 	
 	<update id="updateOrder" parameterType="Map" flushCache="true">
@@ -37,7 +37,7 @@
 	</update>
 	
 	<select id="findAllOrderByUserId" parameterType="String" resultMap="OrderResult">
-		select * from t_order where userId=#{userId} 
+		select * from t_order where userId=#{userId} AND  is_delete=0
 	</select>
 	
 	<select id="adminFindAllOrder" resultMap="OrderResult">
@@ -52,4 +52,29 @@
 	<update id="changeOrderState"  parameterType="Map" flushCache="true">
 		update t_order set state=#{state} where orderId=#{orderId}
 	</update>
+
+
+	<select id="findByPhoneWithOrderId"  resultMap="OrderResult">
+		select * from t_order o,t_user u
+		WHERE o.userId = u.userId
+		<if test="phone == null and orderId == null">
+			and 1 = 2
+		</if>
+		<if test="phone != null">
+		AND u.phone = #{phone}
+	    </if>
+		<if test="orderId != null">
+		  AND o.orderId = #{orderId}
+		</if>
+
+	</select>
+
+	<update id="deleteOneOrderByOefer" parameterType="string" flushCache="true">
+		update t_order SET is_delete = 1 WHERE orderId = #{orderId}
+	</update>
+
+	<delete id="realDeleteOneOrder" parameterType="string" flushCache="true">
+		DELETE FROM  t_order WHERE orderId = #{orderId}
+	</delete>
+
 </mapper> 

@@ -4,6 +4,7 @@ import com.river.dao.CartitemDao;
 import com.river.entity.Cartitem;
 import com.river.service.CartitemService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -23,12 +24,14 @@ public class CartitemServiceImpl implements CartitemService {
 	}
 
 	@Override
+	@Transactional
 	public void updateCartitem(Cartitem cartitem) {
 		cartitemDao.updateCartitem(cartitem);
 		
 	}
 
 	@Override
+	@Transactional
 	public void addToCartitem(Cartitem cartitem) {
 		
 		cartitemDao.addToCartitem(cartitem);
@@ -41,6 +44,7 @@ public class CartitemServiceImpl implements CartitemService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteCartitem(String cartitemId) {
 
 		cartitemDao.deleteCartitem(cartitemId);

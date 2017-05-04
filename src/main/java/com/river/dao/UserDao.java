@@ -4,6 +4,8 @@ import org.springframework.stereotype.Repository;
 
 import com.river.entity.User;
 
+import java.util.List;
+
 @Repository
 public interface UserDao {
 	
@@ -44,5 +46,36 @@ public interface UserDao {
 	public abstract void changePassword(User user);
 	
 	public abstract User findByUserId(String userId);
-	 
+
+	/**
+	 * 查询所有用户
+	 * @return
+     */
+	List<User> findAllUser();
+
+
+	/**
+	 * 通过手机号码查询用户信息
+	 *
+	 * @param phone
+	 * @return
+	 */
+	List<User> findByPhone(String phone);
+
+
+	/**
+	 * 通过用户Id查询用户信息
+	 * @param userId
+	 * @return
+	 */
+	User  findUserByUserId(String userId);
+
+
+	/**
+	 * 更新用户信息
+	 *
+	 * @param user
+	 * @return
+	 */
+	int updateUserInfo(User user);
 }

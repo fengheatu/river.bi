@@ -4,7 +4,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>图书分类</title>
+    <title>零食分类</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -34,7 +34,7 @@
   <body>
   <c:forEach items="${pageBean.pageBeanList }" var="pageBean">
    <div class="icon">
-    <a href="<c:url value='/admin/findSnacksById.html?snacksId=${pageBean.snacksId }'/>"><img src="${pageContext.request.contextPath}/image/${pageBean.image}" border="0" width="103px" height="147px"/></a>
+    <a href="<c:url value='/admin/findSnacksById.html?snacksId=${pageBean.snacksId }'/>"><img src="${pageContext.request.contextPath}/snacksImages/${pageBean.image}" border="0" width="103px" height="147px"/></a>
       <br/>
    	<a href="<c:url value='/admin/findSnacksById.html?snacksId=${pageBean.snacksId }'/>">${pageBean.snackName }</a>
    	<c:if test="${pageBean.state eq 0}">

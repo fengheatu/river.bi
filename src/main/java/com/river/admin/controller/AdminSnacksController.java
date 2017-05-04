@@ -1,45 +1,50 @@
 package com.river.admin.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
+import com.river.entity.Category;
+import com.river.entity.Snacks;
+import com.river.entity.UploadFile;
+import com.river.service.CategoryService;
+import com.river.service.SnacksService;
+import com.river.service.UploadFileService;
+import com.river.utils.CreateUUID;
+import com.river.utils.PageBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import com.river.entity.Category;
-import com.river.entity.Snacks;
-import com.river.service.CategoryService;
-import com.river.service.SnacksService;
-import com.river.utils.CreateUUID;
-import com.river.utils.PageBean;
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminSnacksController {
-	
+
 	@Resource
 	SnacksService snacksService;
-	
+
 	@Resource
 	CategoryService categoryService;
-	
+
+	@Resource
+	UploadFileService uploadFileService;
+
 	@RequestMapping("/showSnacks")
 	public String showSnacks(HttpServletRequest request, @RequestParam int page) {
 		showAllSnacks(request, page);
 		return "../adminjsps/admin/snacks/list.jsp";
 	}
-	
+
 	/**
 	 * 获取请求连接
-	 * 
+	 *
 	 * @param request
 	 * @return
 	 */
@@ -55,66 +60,47 @@ public class AdminSnacksController {
 			return url;
 		}
 	}
-	
+
 	@RequestMapping("/findSnacksById")
 	public String findSnacksById(HttpServletRequest request) {
-		
+
 		request.setAttribute("snacks",snacksService.findById(request.getParameter("snacksId")));
 		List<Category> categoryList = categoryService.getAllCategory();
 		request.setAttribute("categoryList", categoryList);
 		return "../adminjsps/admin/snacks/desc.jsp";
 	}
-	
+
 	@RequestMapping("/adminUpdateSnacksById")
 	public String adminUpdateSnacksById(@RequestParam("image") MultipartFile image,HttpServletRequest request) {
-		
-		String uploadUrl = request.getSession().getServletContext().getRealPath("/")+"image/";
-		String filename = null;
-		
-		
-		if(!(image.getOriginalFilename().isEmpty())) {
-			filename =  CreateUUID.uuid() + image.getOriginalFilename();
-		
-			File dir = new File(uploadUrl);
-			if(!dir.exists()) {
-				dir.mkdirs();
-			}
-			
-			File targetFile = new File(uploadUrl + filename);
-			if(!targetFile.exists()) {
-				try {
-					targetFile.createNewFile();
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			}
-			
-			try {
-				image.transferTo(targetFile);
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			} 
-		}else {
-			filename = request.getParameter("image");
 
+		String uploadUrl = request.getSession().getServletContext().getRealPath("/")+"snacksImages/";
+		String snacksId = CreateUUID.uuid();
+		String  fileName = image.getOriginalFilename();
+		String   rex = fileName.substring(fileName.lastIndexOf("."));
+		String newFileName = System.currentTimeMillis() + rex;
+		String fileUrl = uploadUrl + newFileName;
+		try {
+			image.transferTo(new File(fileUrl));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
-		
+
+
 		Snacks snacks = new Snacks();
 		snacks.setSnacksId(request.getParameter("snacksId"));
 		snacks.setSnackName(request.getParameter("snackName"));
 		snacks.setState(Integer.valueOf(request.getParameter("state")));
 		snacks.setCategoryId(request.getParameter("categoryId"));
 		snacks.setDescription(request.getParameter("description"));
-		snacks.setImage(filename);
+		snacks.setImage(newFileName);
 		snacks.setPrice(Double.valueOf(request.getParameter("price")));
 		snacksService.adminUpdateSnacksById(snacks);
 		showAllSnacks(request, 1);
 		return "../adminjsps/admin/snacks/list.jsp";
 	}
-	
-	
-	
+
+
+
 	public void showAllSnacks(HttpServletRequest request,int page) {
 		if (page <= 0) {
 			page = 1;
@@ -132,34 +118,60 @@ public class AdminSnacksController {
 		pageBean.setUrl(getUrl(request));
 		request.setAttribute("pageBean", pageBean);
 	}
-	
+
 	@RequestMapping("/adminAddSnacks")
-	public String adminAddSnacks(@RequestParam("image") MultipartFile image,HttpServletRequest  request) {
-		
-		String uploadUrl = request.getSession().getServletContext().getRealPath("/")+"image/";
-		String filename =  CreateUUID.uuid() + image.getOriginalFilename();
-		File dir = new File(uploadUrl);
+	public String adminAddSnacks(@RequestParam("file") CommonsMultipartFile[] files, HttpServletRequest  request) {
+
+		String uploadUrl = request.getSession().getServletContext().getRealPath("/")+"snacksImages/";
+		String snacksId = CreateUUID.uuid();
+
+		File dir = new File(uploadUrl,snacksId);
 		if(!dir.exists()) {
 			dir.mkdirs();
 		}
-		
-		File targetFile = new File(uploadUrl + filename);
+		Snacks snacks = new Snacks();
+		int i = 1;
+		for(CommonsMultipartFile file : files ) {
+			String  fileName = file.getOriginalFilename();
+			String   rex = fileName.substring(fileName.lastIndexOf("."));
+			String newFileName = System.currentTimeMillis() + rex;
+			String fileUrl = uploadUrl + newFileName;
+			File dirFile = new File(fileUrl);
+			if(i<=1) {
+				snacks.setImage(newFileName);
+				try {
+					file.transferTo(dirFile);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+				++i;
+				continue;
+			}
+			UploadFile uploadFile = new UploadFile();
+			uploadFile.setId(CreateUUID.uuid());
+			uploadFile.setFileName(fileName);
+			uploadFile.setSnacksId(snacksId);
+			uploadFile.setUrl(newFileName);
+			uploadFile.setReateTime(new Date());
+			try {
+				file.transferTo(dirFile);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+			uploadFileService.insertSelective(uploadFile);
+		}
+
+		/*File targetFile = new File(uploadUrl,filename);
 		if(!targetFile.exists()) {
 			try {
 				targetFile.createNewFile();
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-		}
-		
-		try {
-			image.transferTo(targetFile);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		} 
-		Snacks snacks = new Snacks();
-		snacks.setSnacksId(CreateUUID.uuid());
-		snacks.setImage(filename);
+		}*/
+
+
+		snacks.setSnacksId(snacksId);
 		snacks.setCategoryId(request.getParameter("categoryId"));
 		snacks.setDescription(request.getParameter("description"));
 		snacks.setPrice(Double.valueOf(request.getParameter("price")));

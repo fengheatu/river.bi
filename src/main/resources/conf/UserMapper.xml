@@ -27,4 +27,40 @@
 	<select id="findByUserId" parameterType="String" resultType="User">
 		select * from t_user where userId =#{userId}
 	</select>
+
+	<select id="findAllUser" resultType="User">
+		SELECT * FROM t_user
+	</select>
+
+	<select id="findByPhone" parameterType="string"  resultType="User">
+		SELECT * FROM t_user WHERE phone = #{phone}
+	</select>
+
+
+	<select id="findUserByUserId" parameterType="string"  resultType="User">
+		SELECT * FROM t_user WHERE userId = #{userId}
+	</select>
+
+	<update id="updateUserInfo" parameterType="User" flushCache="true">
+		UPDATE t_user
+		<set>
+		<if test="username != null">
+		username=#{username},
+		</if>
+		<if test="password != null">
+		password=#{password},
+		</if>
+
+		<if test="phone != null">
+		phone=#{phone},
+		</if>
+		<if test="email != null">
+		email=#{email}
+		</if>
+		</set>
+		WHERE userId=#{userId}
+	</update>
+
+
+
 </mapper> 

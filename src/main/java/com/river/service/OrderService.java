@@ -71,6 +71,24 @@ public interface OrderService {
 	 */
 	public abstract void changeOrderState(Map<String, Object> map);
 
-	
+	/**
+	 * 按条件查询订单
+	 * @param phone
+	 * @param orderId
+     * @return
+     */
+	List<Order> findByPhoneWithOrderId(String phone, String orderId);
 
+	/**
+	 * 删除订单
+	 * @param orderId
+     */
+	void deleteOneOrderByOefer(String orderId);
+
+
+	/**
+	 * 删除订单
+	 * @param orderId
+	 */
+	void realDeleteOneOrder(String orderId);
 }

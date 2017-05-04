@@ -34,6 +34,8 @@ function load() {
 	bar1.add("订单管理", "未收货订单", "<c:url value='/admin/addminFindOrderByState.html?state=3'/>", "body");
 	bar1.add("订单管理", "已完成订单", "<c:url value='/admin/addminFindOrderByState.html?state=4'/>", "body");
 
+	bar1.add("用户管理", "所有用户", "<c:url value='/admin/findAllUser.html'/>", "body");
+
 	var d = document.getElementById("menu");
 	d.innerHTML = bar1.toString();
 }
