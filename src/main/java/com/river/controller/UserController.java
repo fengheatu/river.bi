@@ -96,7 +96,7 @@ public class UserController {
 	public void setCookie(HttpServletResponse response, String cookieName) {
 		Cookie cookie = new Cookie("cookiePhone", cookieName);
 		cookie.setMaxAge(60 * 60 * 24 * 7);
-		cookie.setPath("/websnacksstore/userjsps/");
+		cookie.setPath("/userjsps/");
 		response.addCookie(cookie);
 	}
 

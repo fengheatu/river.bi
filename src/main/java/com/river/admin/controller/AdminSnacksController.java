@@ -77,7 +77,7 @@ public class AdminSnacksController {
 		String snacksId = CreateUUID.uuid();
 		String  fileName = image.getOriginalFilename();
 		String   rex = fileName.substring(fileName.lastIndexOf("."));
-		String newFileName = System.currentTimeMillis() + rex;
+		String newFileName = snacksId + File.separator + System.currentTimeMillis() + rex;
 		String fileUrl = uploadUrl + newFileName;
 		File file = new File(uploadUrl);
 		if(!file.exists()) {
@@ -138,7 +138,7 @@ public class AdminSnacksController {
 		for(CommonsMultipartFile file : files ) {
 			String  fileName = file.getOriginalFilename();
 			String   rex = fileName.substring(fileName.lastIndexOf("."));
-			String newFileName = System.currentTimeMillis() + rex;
+			String newFileName =snacksId + File.separator +  System.currentTimeMillis() + rex;
 			String fileUrl = uploadUrl + newFileName;
 			File dirFile = new File(fileUrl);
 			if(i<=1) {
